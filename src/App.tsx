@@ -39,7 +39,7 @@ function App() {
               rotationSpeed={0.015}            
             />
             {/* <Environment preset="warehouse" /> */}
-            <Environment files="/images/misty_pines_2k.hdr" />
+            <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={1}/>
           </Canvas>
         </LogoContainer>
       </MeshContainer>

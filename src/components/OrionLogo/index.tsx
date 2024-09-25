@@ -8,6 +8,7 @@ import { useFrame } from '@react-three/fiber';
 import SphereStationary from '../SpheresGroup/SphereStationary';
 import Plutonium from '../Plutonium';
 import GlassCover from '../GlassCover';
+import Sphere from '../Sphere';
 
 interface Props {
   pauseDuration: number;
@@ -18,7 +19,7 @@ interface Props {
 }
 
 function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initialRotationSpeed, textColor, dotsColor, isAnimated: initialIsAnimated = false }: Props) {
-  const marloLogoOneRef = useRef<Group>(null);
+  const logoRef = useRef<Group>(null);
   const logoTextRefs = useRef<Array<THREE.Mesh | null>>(Array(5).fill(null));
   const [currentTextColor, setCurrentTextColor] = useState(textColor);
   const [currentDotsColor, setCurrentDotsColor] = useState(dotsColor);
@@ -64,11 +65,11 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   const animationControllersRef = useRef<any>({});
 
   useFrame(() => {
-    if (isAnimated && rotating && marloLogoOneRef.current) {
-      marloLogoOneRef.current.rotation.y -= rotationSpeed;
+    if (isAnimated && rotating && logoRef.current) {
+      logoRef.current.rotation.y -= rotationSpeed;
 
-      if (marloLogoOneRef.current.rotation.y <= -fullRotation) {
-        marloLogoOneRef.current.rotation.y = 0;
+      if (logoRef.current.rotation.y <= -fullRotation) {
+        logoRef.current.rotation.y = 0;
         setRotating(false);
       }
     }
@@ -257,7 +258,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
 
   // rotation={new THREE.Euler(0.4, 0.9, 0)}
   return (
-    <group ref={marloLogoOneRef} position={[-10, -2, 0]} scale={[3, 3, 3]} rotation={new THREE.Euler(0, 0.3, 0)}>
+    <group ref={logoRef} position={[-10, -2, 0]} scale={[3, 3, 3]} rotation={new THREE.Euler(0, 0, 0)}>
       <>
         {/* <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
@@ -272,8 +273,9 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
 
           {/* <SphereStationary size={0.3} position={[0, 3.5, 0]} color={currentDotsColor} materialProps={sphereMaterialProps} /> */}
           
-        <Plutonium position={[0, 2, 0]} rotation={new THREE.Euler(0, -Math.PI / 2, 0)} size={1.05} />
+        {/* <Plutonium position={[0, 2, 0]} rotation={new THREE.Euler(0, -Math.PI / 2, 0)} size={0.85} /> */}
         <GlassCover position={[0, 2, 0]} size={1.07} />
+        <Sphere size={0.95} position={[0, 2, 0]} />
 
         <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}

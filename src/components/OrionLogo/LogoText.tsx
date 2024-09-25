@@ -1,8 +1,12 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { Mesh } from 'three';
+import { Mesh, TextureLoader } from 'three';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { useLoader } from '@react-three/fiber';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'; // For loading .exr files
+
 
 interface Props {
   position: [number, number, number];
@@ -28,6 +32,31 @@ interface Props {
 const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, size, depth, materialProps }, ref) => {
   const [font, setFont] = useState<Font | null>(null);
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null); // Ref for material
+
+
+  // Load textures
+  const texture = useLoader(THREE.TextureLoader, '/textures/asphalt/asphalt_pit_lane_diff_2k.jpg'); // Diffuse texture
+  texture.wrapS = THREE.MirroredRepeatWrapping;
+  texture.wrapT = THREE.MirroredRepeatWrapping;
+  texture.magFilter = THREE.LinearFilter;
+  
+  // const envMap = useLoader(RGBELoader, '/textures/environment_map.exr'); // Environment map
+  const displacementMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_disp_2k.png');
+  displacementMap.wrapS = THREE.RepeatWrapping;
+displacementMap.wrapT = THREE.RepeatWrapping;
+displacementMap.magFilter = THREE.LinearFilter;
+
+  // Load .exr normal and roughness maps using EXRLoader
+  const normalMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_nor_gl_2k.png');
+  normalMap.wrapS = THREE.RepeatWrapping;
+  normalMap.wrapT = THREE.RepeatWrapping;
+  normalMap.magFilter = THREE.LinearFilter;
+
+  const roughnessMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_rough_2k.png');
+  roughnessMap.wrapS = THREE.RepeatWrapping;
+roughnessMap.wrapT = THREE.RepeatWrapping;
+roughnessMap.magFilter = THREE.LinearFilter;
+
 
   useEffect(() => {
     const loader = new FontLoader();
@@ -64,6 +93,13 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
     <mesh ref={ref} geometry={textGeometry} rotation={rotation} position={position}>
       <meshPhysicalMaterial
         ref={materialRef} // Attach the material to the ref
+
+        map={texture}
+        displacementMap={displacementMap} // Displacement map
+        displacementScale={0.1} // Adjust depth based on displacement
+        normalMap={normalMap} // Normal map for surface details
+        roughnessMap={roughnessMap} // Roughness map for surface shininess
+
         clearcoat={materialProps.clearcoat}
         transmission={materialProps.transmission}
         roughness={materialProps.roughness}
@@ -76,6 +112,9 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
         attenuationColor={materialProps.attenuationColor}
         envMapIntensity={materialProps.envMapIntensity}
         color={color}
+        
+        transparent={true} // Allow transparency for transmission effects
+
       />
     </mesh>
   );
