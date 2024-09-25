@@ -1,15 +1,28 @@
 import styled from 'styled-components';
 import colors from './styles/colors';
+import anglesImage from '/images/angles.jpg';
+import circlesImage from '/images/circles.jpg';
+import lakeImage from '/images/lake-black-white.jpg';
+// import fenceImage from '/images/fence.jpg';
+
 
 export const AppContainer = styled.div`
   position: relative;
-  background-color: #2A98CF;
-  font-family: "Poppins", system-ui, 'Carlito', 'Roboto Mono', monospace;
+  background-image: url(${anglesImage});
+  /* background-image: url(${circlesImage}); */
+  /* background-image: url(${lakeImage}); */
+  z-index: 1;
+  font-family: 'Roboto Mono', monospace;
+  padding: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 `;
 
@@ -29,8 +42,8 @@ export const RowOne = styled.div`
 export const LogoRow = styled.div`
   background-color: #ffffff; 
   width: 100%; 
-  height: 20rem;
-  margin-bottom: 6rem;
+  height: 100%;
+  /* margin-bottom: 6rem; */
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -87,9 +100,9 @@ export const RightSide = styled.div`
 export const MeshContainer = styled.div`
   position: relative;
   /* z-index: 10; */
-  width: 85rem;
-  height: 30rem;
-  cursor: pointer;
+  width: 100vw;
+  height:  100%;
+  /* cursor: pointer; */
 `;
 
 export const LogoContainer = styled.div`
@@ -97,13 +110,23 @@ export const LogoContainer = styled.div`
   z-index: 10;
   /* top: 0; */
   left: 0;
-  width: 50rem;
-  height: 30rem;
+  width: 100vw;
+  height:  100vh;
   cursor: pointer;
 `;
 
 export const Header = styled.h1`
   color: ${colors.seasalt};
+  font-family: "Poppins", system-ui, 'Carlito', 'Roboto Mono', monospace;
+  font-size: 2rem;
+  margin: 0;
+  padding: 1.6rem 0 0 0;
+  font-weight: 400;
+  /* text-align: center; */
+`;
+
+export const Text = styled.h1`
+  color: ${colors.onyx};
   font-family: "Poppins", system-ui, 'Carlito', 'Roboto Mono', monospace;
   font-size: 2rem;
   margin: 0;
@@ -129,7 +152,7 @@ export const Footer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-wrap: wrap;
   margin-top: auto;
 `;
