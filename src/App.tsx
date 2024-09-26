@@ -1,5 +1,6 @@
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, OrthographicCamera, PerspectiveCamera } from '@react-three/drei';
+import * as THREE from 'three';
 
 import { 
   AppContainer,
@@ -17,9 +18,13 @@ import {
 } from './App.styles'
 import OrionLogo from './components/OrionLogo';
 import MarloLogoGroupTwo from './components/MarloLogoGroupTwo';
+import { useRef } from 'react';
+import { Group } from 'three';
 
 
 function App() {
+  const environmentRef = useRef<Group>(null);
+
   return (
     <AppContainer>
       <MeshContainer>
@@ -27,9 +32,12 @@ function App() {
           <Canvas gl={{ antialias: true }}>
             {/* <OrthographicCamera makeDefault position={[0, 0, 20]} zoom={45} /> */}
             <PerspectiveCamera makeDefault fov={20} position={[0, 0, 80]} />
-            <ambientLight intensity={1.0} />
-            <directionalLight position={[10, -10, 10]} />\
+            <ambientLight intensity={10.0} />
+            <directionalLight position={[10, 10, 10]} />
             <directionalLight position={[-10, 0, 10]} />
+            <directionalLight position={[0, 0, 10]} intensity={1.5} />
+            <directionalLight position={[-2, 0, 5]} intensity={1.5} />
+            <directionalLight position={[2, 0, 5]} intensity={1.5} />
             <OrbitControls enableDamping enableZoom={false} />
             <OrionLogo 
               textColor={'#1f1f1f'}
@@ -38,8 +46,11 @@ function App() {
               pauseDuration={0}
               rotationSpeed={0.015}            
             />
-            {/* <Environment preset="warehouse" /> */}
-            <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={1}/>
+            {/* <Environment preset="lobby" /> */}
+            {/* <group ref={environmentRef} rotation={[0, Math.PI, 0]}> */}
+              <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={1}/>
+            {/* </group> */}
+            <primitive object={new THREE.AxesHelper(5)} />
           </Canvas>
         </LogoContainer>
       </MeshContainer>

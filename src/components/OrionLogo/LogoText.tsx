@@ -35,27 +35,35 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
 
 
   // Load textures
-  const texture = useLoader(THREE.TextureLoader, '/textures/asphalt/asphalt_pit_lane_diff_2k.jpg'); // Diffuse texture
-  texture.wrapS = THREE.MirroredRepeatWrapping;
-  texture.wrapT = THREE.MirroredRepeatWrapping;
+  // const texture = useLoader(THREE.TextureLoader, '/textures/asphalt/asphalt_pit_lane_diff_2k.jpg'); // Diffuse texture
+  const texture = useLoader(THREE.TextureLoader, '/textures/hangar/hangar_concrete_floor_diff_2k.jpg');
+  // const texture = useLoader(THREE.TextureLoader, '/textures/plaster/rough_plasterbrick_05_diff_2k.jpg');
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
   texture.magFilter = THREE.LinearFilter;
   
   // const envMap = useLoader(RGBELoader, '/textures/environment_map.exr'); // Environment map
-  const displacementMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_disp_2k.png');
+  // const displacementMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_disp_2k.png');
+  const displacementMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_disp_2k.png');
+  // const displacementMap = useLoader(TextureLoader, '/textures/plaster/rough_plasterbrick_05_disp_2k.png');
   displacementMap.wrapS = THREE.RepeatWrapping;
-displacementMap.wrapT = THREE.RepeatWrapping;
-displacementMap.magFilter = THREE.LinearFilter;
+  displacementMap.wrapT = THREE.RepeatWrapping;
+  displacementMap.magFilter = THREE.LinearFilter;
 
   // Load .exr normal and roughness maps using EXRLoader
-  const normalMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_nor_gl_2k.png');
+  // const normalMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_nor_gl_2k.png');
+  const normalMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_nor_gl_2k.png');
+  // const normalMap = useLoader(TextureLoader, '/textures/plaster/rough_plasterbrick_05_nor_gl_2k.png');
   normalMap.wrapS = THREE.RepeatWrapping;
   normalMap.wrapT = THREE.RepeatWrapping;
   normalMap.magFilter = THREE.LinearFilter;
 
-  const roughnessMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_rough_2k.png');
+  // const roughnessMap = useLoader(TextureLoader, '/textures/asphalt/asphalt_pit_lane_rough_2k.png');
+  const roughnessMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_rough_2k.png');
+  // const roughnessMap = useLoader(TextureLoader, '/textures/plaster/rough_plasterbrick_05_rough_2k.png');
   roughnessMap.wrapS = THREE.RepeatWrapping;
-roughnessMap.wrapT = THREE.RepeatWrapping;
-roughnessMap.magFilter = THREE.LinearFilter;
+  roughnessMap.wrapT = THREE.RepeatWrapping;
+  roughnessMap.magFilter = THREE.LinearFilter;
 
 
   useEffect(() => {
@@ -96,7 +104,7 @@ roughnessMap.magFilter = THREE.LinearFilter;
 
         map={texture}
         displacementMap={displacementMap} // Displacement map
-        displacementScale={0.1} // Adjust depth based on displacement
+        displacementScale={0} // Adjust depth based on displacement
         normalMap={normalMap} // Normal map for surface details
         roughnessMap={roughnessMap} // Roughness map for surface shininess
 
@@ -113,9 +121,29 @@ roughnessMap.magFilter = THREE.LinearFilter;
         envMapIntensity={materialProps.envMapIntensity}
         color={color}
         
-        transparent={true} // Allow transparency for transmission effects
+        transparent={false} // Allow transparency for transmission effects
 
       />
+      {/* <meshStandardMaterial
+        map={texture}
+        displacementMap={displacementMap} // Displacement map
+        displacementScale={0.1} // Adjust depth based on displacement
+        normalMap={normalMap} // Normal map for surface details
+        roughnessMap={roughnessMap} // Roughness map for surface shininess
+
+        // clearcoat={materialProps.clearcoat}
+        // transmission = {materialProps.transmission}
+        roughness = {materialProps.roughness}
+        metalness = {materialProps.metalness}
+        // reflectivity = {materialProps.reflectivity}
+        // ior = {materialProps.ior}
+        // thickness = {materialProps.thickness}
+        // transparent={true}
+        // attenuationDistance = {materialProps.attenuationDistance}
+        // attenuationColor = {materialProps.attenuationColor}
+        envMapIntensity = {materialProps.envMapIntensity}
+        color = {color}
+      /> */}
     </mesh>
   );
 });

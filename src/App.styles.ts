@@ -126,7 +126,7 @@ export const Header = styled.h1`
 `;
 
 export const Text = styled.h1`
-  color: ${colors.onyx};
+  color: ${colors.outerSpace};
   font-family: "Poppins", system-ui, 'Carlito', 'Roboto Mono', monospace;
   font-size: 2rem;
   margin: 0;

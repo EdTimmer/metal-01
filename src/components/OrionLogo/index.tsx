@@ -9,6 +9,8 @@ import SphereStationary from '../SpheresGroup/SphereStationary';
 import Plutonium from '../Plutonium';
 import GlassCover from '../GlassCover';
 import Sphere from '../Sphere';
+import Cube from '../Cube';
+import Hemisphere from '../Hemisphere';
 
 interface Props {
   pauseDuration: number;
@@ -30,8 +32,8 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   
   // Separate material properties for text and spheres
   const [materialProps, setMaterialProps] = useState({
-    metalness: 1,
-    roughness: 0.424,
+    metalness: 0.16,
+    roughness: 0.5,
     clearcoat: 0,
     reflectivity: 0.5,
     transmission: 0,
@@ -258,7 +260,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
 
   // rotation={new THREE.Euler(0.4, 0.9, 0)}
   return (
-    <group ref={logoRef} position={[-10, -2, 0]} scale={[3, 3, 3]} rotation={new THREE.Euler(0, 0, 0)}>
+    <group ref={logoRef} position={[-13, -2, 0]} scale={[3, 3, 3]} rotation={new THREE.Euler(0, 0, 0)}>
       <>
         {/* <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
@@ -291,14 +293,17 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
 
         <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
-          text={'industries'}
-          position={[4.1, -0.1, 0]}
+          text={'crypto Vault'}
+          position={[5.5, -0.3, 0]}
           rotation={new THREE.Euler(0, 0, 0)}
           color={currentTextColor}
           size={1.6}
           depth={0.25}
           materialProps={materialProps} // Pass shared materialProps
         />
+
+        <Hemisphere size={1.1} position={[0, 2, 0]} rotation={new THREE.Euler(-Math.PI / 2, 0, 0)} />
+        {/* <Cube position={[5.5, -0.3, 0]} size={1.6} /> */}
         {/* <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
           text={'o'}
