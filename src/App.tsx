@@ -38,6 +38,11 @@ function App() {
             <directionalLight position={[0, 0, 10]} intensity={1.5} />
             <directionalLight position={[-2, 0, 5]} intensity={1.5} />
             <directionalLight position={[2, 0, 5]} intensity={1.5} />
+
+            <directionalLight position={[0, 10, 10]} intensity={10} />
+            <directionalLight position={[-3, 10, 10]} intensity={10} />
+            <directionalLight position={[3, 10, 10]} intensity={10} />
+
             <OrbitControls enableDamping enableZoom={false} />
             <OrionLogo 
               textColor={'#1f1f1f'}
@@ -47,10 +52,9 @@ function App() {
               rotationSpeed={0.015}            
             />
             {/* <Environment preset="lobby" /> */}
-            {/* <group ref={environmentRef} rotation={[0, Math.PI, 0]}> */}
-              <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={1}/>
-            {/* </group> */}
-            <primitive object={new THREE.AxesHelper(5)} />
+              <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={2}/>
+              {/* <Environment files="/images/white_wall.jpg" environmentIntensity={1}/> */}
+            {/* <primitive object={new THREE.AxesHelper(5)} /> */}
           </Canvas>
         </LogoContainer>
       </MeshContainer>

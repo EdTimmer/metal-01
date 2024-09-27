@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Group } from 'three';
 import { GUI } from 'lil-gui';
 import LogoText from './LogoText';
-import SpheresGroup from '../SpheresGroup';
+// import SpheresGroup from '../SpheresGroup';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
-import SphereStationary from '../SpheresGroup/SphereStationary';
-import Plutonium from '../Plutonium';
+// import SphereStationary from '../SpheresGroup/SphereStationary';
+// import Plutonium from '../Plutonium';
 import GlassCover from '../GlassCover';
 import Sphere from '../Sphere';
-import Cube from '../Cube';
+// import Cube from '../Cube';
 import Hemisphere from '../Hemisphere';
 
 interface Props {
@@ -23,12 +23,18 @@ interface Props {
 function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initialRotationSpeed, textColor, dotsColor, isAnimated: initialIsAnimated = false }: Props) {
   const logoRef = useRef<Group>(null);
   const logoTextRefs = useRef<Array<THREE.Mesh | null>>(Array(5).fill(null));
+  const sphereRef = useRef<THREE.Mesh | null>(null);
+
   const [currentTextColor, setCurrentTextColor] = useState(textColor);
   const [currentDotsColor, setCurrentDotsColor] = useState(dotsColor);
   const [rotating, setRotating] = useState(true);
   const [pauseDuration, setPauseDuration] = useState(initialPauseDuration);
   const [rotationSpeed, setRotationSpeed] = useState(initialRotationSpeed);
   const [isAnimated, setIsAnimated] = useState(initialIsAnimated);
+  // Rotation control
+  const [isRotating, setIsRotating] = useState(false); // Track rotation state
+  const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
+  const targetRotation = new THREE.Euler(-0.5, 0.2, 0.09); // Target rotation (x, y, z)
   
   // Separate material properties for text and spheres
   const [materialProps, setMaterialProps] = useState({
@@ -67,30 +73,35 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   const animationControllersRef = useRef<any>({});
 
   useFrame(() => {
-    if (isAnimated && rotating && logoRef.current) {
-      logoRef.current.rotation.y -= rotationSpeed;
+    setTimeout(() => {
+      setIsRotating(true); // Start animation after 1 second
+    }, 3000);
 
-      if (logoRef.current.rotation.y <= -fullRotation) {
-        logoRef.current.rotation.y = 0;
-        setRotating(false);
+    if (isRotating && logoRef.current) {
+      const currentRotation = logoRef.current.rotation;
+
+      // Increment rotation towards the target rotation
+      const rotationSpeed = 0.005; // Adjust this value to make the animation slower or faster
+      if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
+        currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeed;
+      }
+      if (Math.abs(currentRotation.y - targetRotation.y) > 0.01) {
+        currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeed;
+      }
+      if (Math.abs(currentRotation.y - targetRotation.z) > 0.01) {
+        currentRotation.z += (targetRotation.z - currentRotation.z) * rotationSpeed;
+      }
+
+      // Stop rotation when it reaches the target
+      if (
+        Math.abs(currentRotation.x - targetRotation.x) < 0.01 &&
+        Math.abs(currentRotation.y - targetRotation.y) < 0.01 &&
+        Math.abs(currentRotation.z - targetRotation.z) < 0.01
+      ) {
+        setIsRotating(false); // Stop animation when rotation reaches the target
       }
     }
   });
-
-  useEffect(() => {
-    if (!rotating || !isAnimated) {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setRotating(true);
-      }, pauseDuration * 1000);
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [rotating, pauseDuration, isAnimated]);
 
   useEffect(() => {
     const guiA = new GUI({ width: 380 });
@@ -258,9 +269,9 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
     }
   }, [isAnimated, rotationSpeed, pauseDuration]);
 
-  // rotation={new THREE.Euler(0.4, 0.9, 0)}
+  // const targetRotation = new THREE.Euler(-0.5, 0.2, 0.09); 
   return (
-    <group ref={logoRef} position={[-13, -2, 0]} scale={[3, 3, 3]} rotation={new THREE.Euler(0, 0, 0)}>
+    <group ref={logoRef} position={[-18, -2, 0]} scale={[3, 3, 3]} rotation={[0.25, 0.335, 0]}>
       <>
         {/* <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
@@ -302,7 +313,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
           materialProps={materialProps} // Pass shared materialProps
         />
 
-        <Hemisphere size={1.1} position={[0, 2, 0]} rotation={new THREE.Euler(-Math.PI / 2, 0, 0)} />
+        <Hemisphere size={1.1} position={[0, 2, 0]} rotation={[0, 0, 0]} />
         {/* <Cube position={[5.5, -0.3, 0]} size={1.6} /> */}
         {/* <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
