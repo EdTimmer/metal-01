@@ -9,14 +9,10 @@ import Sphere from '../Sphere';
 import Hemisphere from '../Hemisphere';
 
 interface Props {
-  pauseDuration: number;
-  rotationSpeed: number;
   textColor: string;
-  dotsColor: string;
-  isAnimated?: boolean;
-}
+};
 
-function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initialRotationSpeed, textColor, dotsColor, isAnimated: initialIsAnimated = false }: Props) {
+function OrionLogo({ textColor }: Props) {
   const logoRef = useRef<Group>(null);
   const logoTextRefs = useRef<Array<THREE.Mesh | null>>(Array(5).fill(null));
   const vRef = useRef<THREE.Group | null>(null);

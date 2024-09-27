@@ -1,6 +1,5 @@
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import * as THREE from 'three';
 
 import { 
   AppContainer,
@@ -33,11 +32,7 @@ function App() {
 
             <OrbitControls enableDamping enableZoom={false} />
             <OrionLogo 
-              textColor={'#1f1f1f'}
-              dotsColor={"#000000"}
-              isAnimated={false}
-              pauseDuration={0}
-              rotationSpeed={0.015}            
+              textColor={'#1f1f1f'}           
             />
             {/* <Environment preset="lobby" /> */}
               <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={2}/>
