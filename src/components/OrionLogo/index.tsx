@@ -1,15 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Group } from 'three';
 // import { GUI } from 'lil-gui';
 import LogoText from './LogoText';
-// import SpheresGroup from '../SpheresGroup';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
-// import SphereStationary from '../SpheresGroup/SphereStationary';
-// import Plutonium from '../Plutonium';
 import GlassCover from '../GlassCover';
 import Sphere from '../Sphere';
-// import Cube from '../Cube';
 import Hemisphere from '../Hemisphere';
 
 interface Props {
@@ -23,19 +19,20 @@ interface Props {
 function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initialRotationSpeed, textColor, dotsColor, isAnimated: initialIsAnimated = false }: Props) {
   const logoRef = useRef<Group>(null);
   const logoTextRefs = useRef<Array<THREE.Mesh | null>>(Array(5).fill(null));
-  const sphereRef = useRef<THREE.Mesh | null>(null);
   const vRef = useRef<THREE.Group | null>(null);
 
-  const [currentTextColor, setCurrentTextColor] = useState(textColor);
-  const [currentDotsColor, setCurrentDotsColor] = useState(dotsColor);
-  const [rotating, setRotating] = useState(true);
-  const [pauseDuration, setPauseDuration] = useState(initialPauseDuration);
-  const [rotationSpeed, setRotationSpeed] = useState(initialRotationSpeed);
-  const [isAnimated, setIsAnimated] = useState(initialIsAnimated);
+  const currentTextColor = textColor;
+
+  // const [currentTextColor, setCurrentTextColor] = useState(textColor);
+  // const [currentDotsColor, setCurrentDotsColor] = useState(dotsColor);
+  // const [rotating, setRotating] = useState(true);
+  // const [pauseDuration, setPauseDuration] = useState(initialPauseDuration);
+  // const [rotationSpeed, setRotationSpeed] = useState(initialRotationSpeed);
+  // const [isAnimated, setIsAnimated] = useState(initialIsAnimated);
   // Rotation control
   const [isRotating, setIsRotating] = useState(false); // Track rotation state
   const [isRotatingV, setIsRotatingV] = useState(false); // Track rotation state
-  const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
+  // const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
   const targetRotation = new THREE.Euler(-0.55, 0.35, 0.18); // Target rotation (x, y, z)
 
   const targetRotationV = new THREE.Euler(0.35, -Math.PI / 2, 0.18);
@@ -44,7 +41,20 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   const rotationSpeedV = 0.025;
   
   // Separate material properties for text and spheres
-  const [materialProps, setMaterialProps] = useState({
+  // const [materialProps, setMaterialProps] = useState({
+  //   metalness: 0.16,
+  //   roughness: 0.5,
+  //   clearcoat: 0,
+  //   reflectivity: 0.5,
+  //   transmission: 0,
+  //   ior: 1.45,
+  //   thickness: 0.5,
+  //   attenuationDistance: 2.5,
+  //   attenuationColor: '#ffffff',
+  //   envMapIntensity: 1,
+  // }); 
+
+  const materialProps ={
     metalness: 0.16,
     roughness: 0.5,
     clearcoat: 0,
@@ -55,20 +65,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
     attenuationDistance: 2.5,
     attenuationColor: '#ffffff',
     envMapIntensity: 1,
-  }); 
-
-  const [sphereMaterialProps, setSphereMaterialProps] = useState({
-    metalness: 1,
-    roughness: 0.15,
-    clearcoat: 0,
-    reflectivity: 0.5,
-    transmission: 0,
-    ior: 1.45,
-    thickness: 0.5,
-    attenuationDistance: 2.5,
-    attenuationColor: '#ffffff',
-    envMapIntensity: 1,
-  });
+  }; 
 
   useFrame(() => {
     setTimeout(() => {
@@ -107,16 +104,6 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
 
     if (isRotatingV && vRef.current) {
       const currentRotation = vRef.current.rotation;
-
-      // /// Rotate at a constant speed until the target is reached
-      // if (Math.abs(currentRotation.y - targetRotationV.y) > rotationSpeedV) {
-      //   // Apply a fixed speed to y-axis rotation
-      //   currentRotation.y += Math.sign(targetRotationV.y - currentRotation.y) * rotationSpeedV;
-      // } else {
-      //   // Once close enough, snap to the target rotation and stop rotating
-      //   currentRotation.y = targetRotationV.y;
-      //   setIsRotatingV(false); // Stop animation when the target is reached
-      // }
       // Increment rotation towards the target rotation
       if (Math.abs(currentRotation.y - targetRotationV.y) > 0.01) {
         currentRotation.y += (targetRotationV.y - currentRotation.y) * rotationSpeedV;
@@ -328,7 +315,6 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
           <LogoText
             ref={(el) => (logoTextRefs.current[0] = el)}
             text={'V'}
-            // position={[0.25, -0.16, 0]}
             position={[0, 0, 0]}
             rotation={new THREE.Euler(0, Math.PI / 2, 0)}
             color={currentTextColor}

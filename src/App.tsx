@@ -1,30 +1,18 @@
 import { Canvas } from '@react-three/fiber';
-import { Environment, OrbitControls, OrthographicCamera, PerspectiveCamera } from '@react-three/drei';
+import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import * as THREE from 'three';
 
 import { 
   AppContainer,
   MeshContainer,
   LogoContainer,
-  LogoRow,
-  YellowStripe,
-  RightSide,
-  RowOne,
   HeaderContainer,
-  Header,
   Text,
-  GreenStripe,
   Footer,
 } from './App.styles'
 import OrionLogo from './components/OrionLogo';
-import MarloLogoGroupTwo from './components/MarloLogoGroupTwo';
-import { useRef } from 'react';
-import { Group } from 'three';
-
 
 function App() {
-  const environmentRef = useRef<Group>(null);
-
   return (
     <AppContainer>
       <MeshContainer>
