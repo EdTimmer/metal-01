@@ -67,13 +67,13 @@ export const MeshContainer = styled.div`
   @media (max-width: 450px) {
     height: 30rem;
     margin-top: 5rem;
-    margin-left: 1rem;
+    margin-left: 3rem;
   }
 
   @media (max-width: 350px) {
     height: 25rem;
     margin-top: 1rem;
-    margin-left: 1rem;
+    margin-left: 3rem;
   }
 `;
 
