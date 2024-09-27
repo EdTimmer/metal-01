@@ -107,13 +107,13 @@ function OrionLogo({ textColor }: Props) {
         currentRotation.y += (targetRotationV.y - currentRotation.y) * rotationSpeedV;
       }
       if (Math.abs(currentPosition.z - targetPositionV[0]) > 0.01) {
-        currentPosition.z += (targetPositionV[0] - currentPosition.z) * rotationSpeedV;
+        currentPosition.z += (targetPositionV[2] - currentPosition.z) * rotationSpeedV;
       }
 
       // Stop rotation when it reaches the target
       if (
         Math.abs(currentRotation.y - targetRotationV.y) < 0.01 &&
-        Math.abs(currentPosition.z - targetPositionV[0]) < 0.01
+        Math.abs(currentPosition.z - targetPositionV[2]) < 0.01
       ) {
         setIsRotating(false); // Stop animation when rotation reaches the target
       }
@@ -313,7 +313,7 @@ function OrionLogo({ textColor }: Props) {
           depth={0.25}
           materialProps={materialProps}
         />
-        <group ref={vRef} position={[0.25, -0.16, -0.7]}>
+        <group ref={vRef} position={[0.25, -0.16, -1.2]}>
           <LogoText
             ref={(el) => (logoTextRefs.current[0] = el)}
             text={'V'}
