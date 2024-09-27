@@ -51,12 +51,12 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
   useFrame(() => {
     setTimeout(() => {
       setIsRotating(true); // Start animation after 1 second
-    }, 8000);
+    }, 7000);
     if (isRotating && meshRef.current) {
       const currentRotation = meshRef.current.rotation;
 
       // Increment rotation towards the target rotation
-      const rotationSpeed = 0.005; // Adjust this value to make the animation slower or faster
+      const rotationSpeed = 0.01; // Adjust this value to make the animation slower or faster
       if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
         currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeed;
       }

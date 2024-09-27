@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Group } from 'three';
-import { GUI } from 'lil-gui';
+// import { GUI } from 'lil-gui';
 import LogoText from './LogoText';
 // import SpheresGroup from '../SpheresGroup';
 import * as THREE from 'three';
@@ -24,6 +24,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   const logoRef = useRef<Group>(null);
   const logoTextRefs = useRef<Array<THREE.Mesh | null>>(Array(5).fill(null));
   const sphereRef = useRef<THREE.Mesh | null>(null);
+  const vRef = useRef<THREE.Group | null>(null);
 
   const [currentTextColor, setCurrentTextColor] = useState(textColor);
   const [currentDotsColor, setCurrentDotsColor] = useState(dotsColor);
@@ -33,8 +34,14 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   const [isAnimated, setIsAnimated] = useState(initialIsAnimated);
   // Rotation control
   const [isRotating, setIsRotating] = useState(false); // Track rotation state
+  const [isRotatingV, setIsRotatingV] = useState(false); // Track rotation state
   const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
-  const targetRotation = new THREE.Euler(-0.55, 0.35, 0.15); // Target rotation (x, y, z)
+  const targetRotation = new THREE.Euler(-0.55, 0.35, 0.18); // Target rotation (x, y, z)
+
+  const targetRotationV = new THREE.Euler(0.35, -Math.PI / 2, 0.18);
+
+  const rotationSpeedLogo = 0.01;
+  const rotationSpeedV = 0.025;
   
   // Separate material properties for text and spheres
   const [materialProps, setMaterialProps] = useState({
@@ -63,33 +70,23 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
     envMapIntensity: 1,
   });
 
-  const fullRotation = Math.PI * 2;
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const textFolderRef = useRef<any>(null);
-  const sphereFolderRef = useRef<any>(null);
-  const animationFolderRef = useRef<any>(null);
-  const textControllersRef = useRef<any>({});
-  const sphereControllersRef = useRef<any>({});
-  const animationControllersRef = useRef<any>({});
-
   useFrame(() => {
     setTimeout(() => {
       setIsRotating(true); // Start animation after 1 second
     }, 1000);
 
     if (isRotating && logoRef.current) {
-      const currentRotation = logoRef.current.rotation;
+      const currentRotation = logoRef.current.rotation;      
 
       // Increment rotation towards the target rotation
-      const rotationSpeed = 0.005; // Adjust this value to make the animation slower or faster
       if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
-        currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeed;
+        currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeedLogo;
       }
       if (Math.abs(currentRotation.y - targetRotation.y) > 0.01) {
-        currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeed;
+        currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeedLogo;
       }
       if (Math.abs(currentRotation.y - targetRotation.z) > 0.01) {
-        currentRotation.z += (targetRotation.z - currentRotation.z) * rotationSpeed;
+        currentRotation.z += (targetRotation.z - currentRotation.z) * rotationSpeedLogo;
       }
 
       // Stop rotation when it reaches the target
@@ -97,6 +94,37 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
         Math.abs(currentRotation.x - targetRotation.x) < 0.01 &&
         Math.abs(currentRotation.y - targetRotation.y) < 0.01 &&
         Math.abs(currentRotation.z - targetRotation.z) < 0.01
+      ) {
+        setIsRotating(false); // Stop animation when rotation reaches the target
+      }
+    }
+  });
+
+  useFrame(() => {
+    setTimeout(() => {
+      setIsRotatingV(true); // Start animation after 1 second
+    }, 5000);
+
+    if (isRotatingV && vRef.current) {
+      const currentRotation = vRef.current.rotation;
+
+      // /// Rotate at a constant speed until the target is reached
+      // if (Math.abs(currentRotation.y - targetRotationV.y) > rotationSpeedV) {
+      //   // Apply a fixed speed to y-axis rotation
+      //   currentRotation.y += Math.sign(targetRotationV.y - currentRotation.y) * rotationSpeedV;
+      // } else {
+      //   // Once close enough, snap to the target rotation and stop rotating
+      //   currentRotation.y = targetRotationV.y;
+      //   setIsRotatingV(false); // Stop animation when the target is reached
+      // }
+      // Increment rotation towards the target rotation
+      if (Math.abs(currentRotation.y - targetRotationV.y) > 0.01) {
+        currentRotation.y += (targetRotationV.y - currentRotation.y) * rotationSpeedV;
+      }
+
+      // Stop rotation when it reaches the target
+      if (
+        Math.abs(currentRotation.y - targetRotationV.y) < 0.01
       ) {
         setIsRotating(false); // Stop animation when rotation reaches the target
       }
@@ -269,79 +297,60 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   //   }
   // }, [isAnimated, rotationSpeed, pauseDuration]);
 
-  // const targetRotation = new THREE.Euler(-0.5, 0.2, 0.09); 
   return (
-    <group ref={logoRef} position={[-18, -2, 0]} scale={[3, 3, 3]} rotation={[0.25, 0.335, 0]}>
+    <group ref={logoRef} position={[-3, 0, 0]} scale={[3, 3, 3]} rotation={[0.25, 0.335, 0]}>
       <>
-        {/* <LogoText
-          ref={(el) => (logoTextRefs.current[0] = el)}
-          text={'O'}
-          position={[0, 2, 0]}
-          rotation={new THREE.Euler(0, 0, 0)}
-          color={currentTextColor}
-          size={2}
-          depth={0.4}
-          materialProps={materialProps} // Pass shared materialProps
-        /> */}
-
-          {/* <SphereStationary size={0.3} position={[0, 3.5, 0]} color={currentDotsColor} materialProps={sphereMaterialProps} /> */}
-          
-        {/* <Plutonium position={[0, 2, 0]} rotation={new THREE.Euler(0, -Math.PI / 2, 0)} size={0.85} /> */}
-        <GlassCover position={[0, 2, 0]} size={1.07} />
-        <Sphere size={0.95} position={[0, 2, 0]} />
+        <GlassCover position={[-4.5, 2, 0]} size={1.07} />
+        <Sphere size={0.95} position={[-4.5, 2, 0]} />
 
         <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
           text={'RION'}
-          position={[4.5, 2, 0]}
+          position={[0, 2, 0]}
           rotation={new THREE.Euler(0, 0, 0)}
           color={currentTextColor}
           size={2}
           depth={0.6}
-          materialProps={materialProps} // Pass shared materialProps
+          materialProps={materialProps} 
         />
-
 
         <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
-          text={'crypto Vault'}
-          position={[5.5, -0.3, 0]}
+          text={'crypto'}
+          position={[-3.3, -0.3, 0]}
           rotation={new THREE.Euler(0, 0, 0)}
           color={currentTextColor}
-          size={1.6}
+          size={1.4}
           depth={0.25}
-          materialProps={materialProps} // Pass shared materialProps
+          materialProps={materialProps}
+        />
+        <group ref={vRef} position={[0.25, -0.16, 0]}>
+          <LogoText
+            ref={(el) => (logoTextRefs.current[0] = el)}
+            text={'V'}
+            // position={[0.25, -0.16, 0]}
+            position={[0, 0, 0]}
+            rotation={new THREE.Euler(0, Math.PI / 2, 0)}
+            color={currentTextColor}
+            size={2}
+            depth={0.6}
+            materialProps={materialProps}
+          />
+        </group>
+
+        <LogoText
+          ref={(el) => (logoTextRefs.current[0] = el)}
+          text={'ault'}
+          position={[3.37, -0.16, 0]}
+          rotation={new THREE.Euler(0, 0, 0)}
+          color={currentTextColor}
+          size={2}
+          depth={0.6}
+          materialProps={materialProps}
         />
 
-        <Hemisphere size={1.1} position={[0, 2, 0]} rotation={[0, 0, 0]} />
-        {/* <Cube position={[5.5, -0.3, 0]} size={1.6} /> */}
-        {/* <LogoText
-          ref={(el) => (logoTextRefs.current[0] = el)}
-          text={'o'}
-          position={[5, -0.15, 0]}
-          rotation={new THREE.Euler(0, 0, 0)}
-          color={currentTextColor}
-          size={1.6}
-          depth={0.4}
-          materialProps={materialProps} // Pass shared materialProps
-        /> */}
-        
-        {/* <SphereStationary size={0.26} position={[-0.62, 0.07, 0]} color={currentDotsColor} materialProps={sphereMaterialProps} /> */}
-
-        {/* <SphereStationary size={0.262} position={[6.4, 0.07, 0]} color={currentDotsColor} materialProps={sphereMaterialProps} /> */}
-
-        {/* <LogoText
-          ref={(el) => (logoTextRefs.current[4] = el)}
-          text={'|'}
-          position={[3.4, 0, 0]}
-          rotation={new THREE.Euler(0, 0, 0)}
-          color={currentTextColor}
-          size={1.6}
-          depth={0.4}
-          materialProps={materialProps}
-        /> */}
+        <Hemisphere size={1.1} position={[-4.5, 2, 0]} rotation={[0.3, 0, 0]} />
       </>
-      {/* <SpheresGroup dotsColor={currentDotsColor} sphereMaterialProps={sphereMaterialProps} position={[3.4, 1.125, 0]} /> */}
     </group>
   );
 }

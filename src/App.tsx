@@ -53,7 +53,8 @@ function App() {
             />
             {/* <Environment preset="lobby" /> */}
               <Environment files="/images/misty_pines_2k.hdr" environmentIntensity={2}/>
-              {/* <Environment files="/images/white_wall.jpg" environmentIntensity={1}/> */}
+              {/* <Environment files="/images/sunflowers_puresky_2k.hdr" environmentIntensity={2}/> */}
+              
             {/* <primitive object={new THREE.AxesHelper(5)} /> */}
           </Canvas>
         </LogoContainer>
