@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import colors from './styles/colors';
-import anglesImage from '/images/angles.jpg';
-import circlesImage from '/images/circles.jpg';
-import lakeImage from '/images/lake-black-white.jpg';
-// import fenceImage from '/images/fence.jpg';
+import anglesImage from '/images/angles.jpg';;
 
 
 export const AppContainer = styled.div`
   position: relative;
   background-image: url(${anglesImage});
-  /* background-image: url(${circlesImage}); */
-  /* background-image: url(${lakeImage}); */
   z-index: 1;
   font-family: 'Roboto Mono', monospace;
   padding: 0;
