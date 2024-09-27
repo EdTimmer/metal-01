@@ -64,7 +64,7 @@ function App() {
       
       <Footer>
         <HeaderContainer>
-          <Text>Created by Edward Timmer, Deloitte Digital</Text>
+          <Text>Created by Edward Timmer</Text>
         </HeaderContainer>
       </Footer>
 

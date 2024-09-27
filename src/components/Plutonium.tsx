@@ -1,5 +1,4 @@
 import { useRef, useEffect } from "react";
-import { Mesh } from "three";
 import { shaderMaterial } from '@react-three/drei';
 import { useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
 import * as THREE from 'three';

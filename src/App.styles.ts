@@ -150,7 +150,7 @@ export const HeaderContainer = styled.div`
 export const Footer = styled.div`
   width: 100%;
   height: auto;
-  padding: 2rem 4rem 2rem 6rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

@@ -6,7 +6,6 @@ import { TextureLoader } from 'three';
 interface Props {
   position: [number, number, number];
   size: number;
-  // rotation: THREE.Euler;
   rotation: [number, number, number];
 }
 
@@ -16,7 +15,7 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
 
     // Rotation control
     const [isRotating, setIsRotating] = useState(false); // Track rotation state
-    const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
+    // const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
     const targetRotation = new THREE.Euler(-Math.PI, 0, 0); // Target rotation (x, y, z)
 
   const texture = useLoader(THREE.TextureLoader, '/textures/hangar/hangar_concrete_floor_diff_2k.jpg');

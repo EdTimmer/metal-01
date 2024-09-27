@@ -4,9 +4,6 @@ import { Mesh, TextureLoader } from 'three';
 import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { useLoader } from '@react-three/fiber';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'; // For loading .exr files
-
 
 interface Props {
   position: [number, number, number];
@@ -107,7 +104,6 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
         displacementScale={0} // Adjust depth based on displacement
         normalMap={normalMap} // Normal map for surface details
         roughnessMap={roughnessMap} // Roughness map for surface shininess
-
         clearcoat={materialProps.clearcoat}
         transmission={materialProps.transmission}
         roughness={materialProps.roughness}
@@ -115,35 +111,12 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
         reflectivity={materialProps.reflectivity}
         ior={materialProps.ior}
         thickness={materialProps.thickness}
-        // transparent={true}
         attenuationDistance={materialProps.attenuationDistance}
         attenuationColor={materialProps.attenuationColor}
         envMapIntensity={materialProps.envMapIntensity}
-        color={color}
-        
+        color={color}        
         transparent={false} // Allow transparency for transmission effects
-
       />
-      {/* <meshStandardMaterial
-        map={texture}
-        displacementMap={displacementMap} // Displacement map
-        displacementScale={0.1} // Adjust depth based on displacement
-        normalMap={normalMap} // Normal map for surface details
-        roughnessMap={roughnessMap} // Roughness map for surface shininess
-
-        // clearcoat={materialProps.clearcoat}
-        // transmission = {materialProps.transmission}
-        roughness = {materialProps.roughness}
-        metalness = {materialProps.metalness}
-        // reflectivity = {materialProps.reflectivity}
-        // ior = {materialProps.ior}
-        // thickness = {materialProps.thickness}
-        // transparent={true}
-        // attenuationDistance = {materialProps.attenuationDistance}
-        // attenuationColor = {materialProps.attenuationColor}
-        envMapIntensity = {materialProps.envMapIntensity}
-        color = {color}
-      /> */}
     </mesh>
   );
 });
