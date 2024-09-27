@@ -34,7 +34,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   // Rotation control
   const [isRotating, setIsRotating] = useState(false); // Track rotation state
   const [rotationValues, setRotationValues] = useState({ x: 0, y: 0, z: 0 });
-  const targetRotation = new THREE.Euler(-0.5, 0.2, 0.09); // Target rotation (x, y, z)
+  const targetRotation = new THREE.Euler(-0.55, 0.35, 0.15); // Target rotation (x, y, z)
   
   // Separate material properties for text and spheres
   const [materialProps, setMaterialProps] = useState({
@@ -75,7 +75,7 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
   useFrame(() => {
     setTimeout(() => {
       setIsRotating(true); // Start animation after 1 second
-    }, 3000);
+    }, 1000);
 
     if (isRotating && logoRef.current) {
       const currentRotation = logoRef.current.rotation;
@@ -103,171 +103,171 @@ function OrionLogo({ pauseDuration: initialPauseDuration, rotationSpeed: initial
     }
   });
 
-  useEffect(() => {
-    const guiA = new GUI({ width: 380 });
+  // useEffect(() => {
+  //   const guiA = new GUI({ width: 380 });
 
-    // Position the GUI
-    guiA.domElement.style.position = 'absolute'; // Customize the position
-    guiA.domElement.style.right = '0'; // Move this panel to the left side of the screen
-    guiA.domElement.style.top = '0'; // Move it down slightly
+  //   // Position the GUI
+  //   guiA.domElement.style.position = 'absolute'; // Customize the position
+  //   guiA.domElement.style.right = '0'; // Move this panel to the left side of the screen
+  //   guiA.domElement.style.top = '0'; // Move it down slightly
 
-    // Text material controls
-    const textFolder = guiA.addFolder('Text Top');
-    textFolderRef.current = textFolder;
-    const textDebugObject = { ...materialProps, color: currentTextColor };
+  //   // Text material controls
+  //   const textFolder = guiA.addFolder('Text Top');
+  //   textFolderRef.current = textFolder;
+  //   const textDebugObject = { ...materialProps, color: currentTextColor };
 
-    textControllersRef.current.colorController = textFolder.addColor(textDebugObject, 'color').onChange((value: string) => {
-      setCurrentTextColor(value);
-      logoTextRefs.current.forEach((ref) => {
-        if (ref && ref.material instanceof THREE.MeshPhysicalMaterial) {
-          ref.material.color.set(value);
-        }
-      });
-    });
+  //   textControllersRef.current.colorController = textFolder.addColor(textDebugObject, 'color').onChange((value: string) => {
+  //     setCurrentTextColor(value);
+  //     logoTextRefs.current.forEach((ref) => {
+  //       if (ref && ref.material instanceof THREE.MeshPhysicalMaterial) {
+  //         ref.material.color.set(value);
+  //       }
+  //     });
+  //   });
 
-    textControllersRef.current.metalnessController = textFolder.add(textDebugObject, 'metalness', 0, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, metalness: value }));
-    });
+  //   textControllersRef.current.metalnessController = textFolder.add(textDebugObject, 'metalness', 0, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, metalness: value }));
+  //   });
 
-    textControllersRef.current.roughnessController = textFolder.add(textDebugObject, 'roughness', 0, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, roughness: value }));
-    });
+  //   textControllersRef.current.roughnessController = textFolder.add(textDebugObject, 'roughness', 0, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, roughness: value }));
+  //   });
 
-    textControllersRef.current.clearcoatController = textFolder.add(textDebugObject, 'clearcoat', 0, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, clearcoat: value }));
-    });
+  //   textControllersRef.current.clearcoatController = textFolder.add(textDebugObject, 'clearcoat', 0, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, clearcoat: value }));
+  //   });
 
-    textControllersRef.current.reflectivityController = textFolder.add(textDebugObject, 'reflectivity', 0, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, reflectivity: value }));
-    });
+  //   textControllersRef.current.reflectivityController = textFolder.add(textDebugObject, 'reflectivity', 0, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, reflectivity: value }));
+  //   });
 
-    textControllersRef.current.transmissionController = textFolder.add(textDebugObject, 'transmission', 0, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, transmission: value }));
-    });
+  //   textControllersRef.current.transmissionController = textFolder.add(textDebugObject, 'transmission', 0, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, transmission: value }));
+  //   });
 
-    textControllersRef.current.iorController = textFolder.add(textDebugObject, 'ior', 1.3, 2).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, ior: value }));
-    });
+  //   textControllersRef.current.iorController = textFolder.add(textDebugObject, 'ior', 1.3, 2).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, ior: value }));
+  //   });
 
-    textControllersRef.current.thicknessController = textFolder.add(textDebugObject, 'thickness', 0.1, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, thickness: value }));
-    });
+  //   textControllersRef.current.thicknessController = textFolder.add(textDebugObject, 'thickness', 0.1, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, thickness: value }));
+  //   });
 
-    textControllersRef.current.attenuationDistanceController = textFolder.add(textDebugObject, 'attenuationDistance', 0.1, 5).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, attenuationDistance: value }));
-    });
+  //   textControllersRef.current.attenuationDistanceController = textFolder.add(textDebugObject, 'attenuationDistance', 0.1, 5).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, attenuationDistance: value }));
+  //   });
 
-    textControllersRef.current.attenuationColorController = textFolder.addColor(textDebugObject, 'attenuationColor').onChange((value: string) => {
-      setMaterialProps((prev) => ({ ...prev, attenuationColor: value }));
-    });
+  //   textControllersRef.current.attenuationColorController = textFolder.addColor(textDebugObject, 'attenuationColor').onChange((value: string) => {
+  //     setMaterialProps((prev) => ({ ...prev, attenuationColor: value }));
+  //   });
 
-    textControllersRef.current.envMapIntensityController = textFolder.add(textDebugObject, 'envMapIntensity', 0, 1).onChange((value: number) => {
-      setMaterialProps((prev) => ({ ...prev, envMapIntensity: value }));
-    });
+  //   textControllersRef.current.envMapIntensityController = textFolder.add(textDebugObject, 'envMapIntensity', 0, 1).onChange((value: number) => {
+  //     setMaterialProps((prev) => ({ ...prev, envMapIntensity: value }));
+  //   });
 
-    textFolder.open();
+  //   textFolder.open();
 
-    // Spheres material controls
-    const spheresFolder = guiA.addFolder('Dots Top');
-    sphereFolderRef.current = spheresFolder;
-    const sphereDebugObject = { ...sphereMaterialProps, dotsColor: currentDotsColor };
+  //   // Spheres material controls
+  //   const spheresFolder = guiA.addFolder('Dots Top');
+  //   sphereFolderRef.current = spheresFolder;
+  //   const sphereDebugObject = { ...sphereMaterialProps, dotsColor: currentDotsColor };
 
-    sphereControllersRef.current.dotsColorController = spheresFolder.addColor(sphereDebugObject, 'dotsColor').onChange((value: string) => {
-      setCurrentDotsColor(value);
-    });
+  //   sphereControllersRef.current.dotsColorController = spheresFolder.addColor(sphereDebugObject, 'dotsColor').onChange((value: string) => {
+  //     setCurrentDotsColor(value);
+  //   });
 
-    sphereControllersRef.current.metalnessController = spheresFolder.add(sphereDebugObject, 'metalness', 0, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, metalness: value }));
-    });
+  //   sphereControllersRef.current.metalnessController = spheresFolder.add(sphereDebugObject, 'metalness', 0, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, metalness: value }));
+  //   });
 
-    sphereControllersRef.current.roughnessController = spheresFolder.add(sphereDebugObject, 'roughness', 0, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, roughness: value }));
-    });
+  //   sphereControllersRef.current.roughnessController = spheresFolder.add(sphereDebugObject, 'roughness', 0, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, roughness: value }));
+  //   });
 
-    sphereControllersRef.current.clearcoatController = spheresFolder.add(sphereDebugObject, 'clearcoat', 0, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, clearcoat: value }));
-    });
+  //   sphereControllersRef.current.clearcoatController = spheresFolder.add(sphereDebugObject, 'clearcoat', 0, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, clearcoat: value }));
+  //   });
 
-    sphereControllersRef.current.reflectivityController = spheresFolder.add(sphereDebugObject, 'reflectivity', 0, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, reflectivity: value }));
-    });
+  //   sphereControllersRef.current.reflectivityController = spheresFolder.add(sphereDebugObject, 'reflectivity', 0, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, reflectivity: value }));
+  //   });
 
-    sphereControllersRef.current.transmissionController = spheresFolder.add(sphereDebugObject, 'transmission', 0, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, transmission: value }));
-    });
+  //   sphereControllersRef.current.transmissionController = spheresFolder.add(sphereDebugObject, 'transmission', 0, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, transmission: value }));
+  //   });
 
-    sphereControllersRef.current.iorController = spheresFolder.add(sphereDebugObject, 'ior', 1.3, 2).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, ior: value }));
-    });
+  //   sphereControllersRef.current.iorController = spheresFolder.add(sphereDebugObject, 'ior', 1.3, 2).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, ior: value }));
+  //   });
 
-    sphereControllersRef.current.thicknessController = spheresFolder.add(sphereDebugObject, 'thickness', 0.1, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, thickness: value }));
-    });
+  //   sphereControllersRef.current.thicknessController = spheresFolder.add(sphereDebugObject, 'thickness', 0.1, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, thickness: value }));
+  //   });
 
-    sphereControllersRef.current.attenuationDistanceController = spheresFolder.add(sphereDebugObject, 'attenuationDistance', 0.1, 5).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, attenuationDistance: value }));
-    });
+  //   sphereControllersRef.current.attenuationDistanceController = spheresFolder.add(sphereDebugObject, 'attenuationDistance', 0.1, 5).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, attenuationDistance: value }));
+  //   });
 
-    sphereControllersRef.current.attenuationColorController = spheresFolder.addColor(sphereDebugObject, 'attenuationColor').onChange((value: string) => {
-      setSphereMaterialProps((prev) => ({ ...prev, attenuationColor: value }));
-    });
+  //   sphereControllersRef.current.attenuationColorController = spheresFolder.addColor(sphereDebugObject, 'attenuationColor').onChange((value: string) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, attenuationColor: value }));
+  //   });
 
-    sphereControllersRef.current.envMapIntensityController = spheresFolder.add(sphereDebugObject, 'envMapIntensity', 0, 1).onChange((value: number) => {
-      setSphereMaterialProps((prev) => ({ ...prev, envMapIntensity: value }));
-    });
+  //   sphereControllersRef.current.envMapIntensityController = spheresFolder.add(sphereDebugObject, 'envMapIntensity', 0, 1).onChange((value: number) => {
+  //     setSphereMaterialProps((prev) => ({ ...prev, envMapIntensity: value }));
+  //   });
 
-    spheresFolder.open();
+  //   spheresFolder.open();
 
-    // Animation controls
-    const animationFolder = guiA.addFolder('Animation Top');
-    animationFolderRef.current = animationFolder;
-    const animationDebugObject = { isAnimated, rotationSpeed, pauseDuration };
+  //   // Animation controls
+  //   const animationFolder = guiA.addFolder('Animation Top');
+  //   animationFolderRef.current = animationFolder;
+  //   const animationDebugObject = { isAnimated, rotationSpeed, pauseDuration };
 
-    animationControllersRef.current.isAnimatedController = animationFolder.add(animationDebugObject, 'isAnimated').onChange((value: boolean) => {
-      setIsAnimated(value);
-    });
+  //   animationControllersRef.current.isAnimatedController = animationFolder.add(animationDebugObject, 'isAnimated').onChange((value: boolean) => {
+  //     setIsAnimated(value);
+  //   });
 
-    animationControllersRef.current.rotationSpeedController = animationFolder.add(animationDebugObject, 'rotationSpeed', 0.001, 0.1, 0.002).onChange((value: number) => {
-      setRotationSpeed(value);
-    });
+  //   animationControllersRef.current.rotationSpeedController = animationFolder.add(animationDebugObject, 'rotationSpeed', 0.001, 0.1, 0.002).onChange((value: number) => {
+  //     setRotationSpeed(value);
+  //   });
 
-    animationControllersRef.current.pauseDurationController = animationFolder.add(animationDebugObject, 'pauseDuration', 0, 10, 1).onChange((value: number) => {
-      setPauseDuration(value);
-    });
+  //   animationControllersRef.current.pauseDurationController = animationFolder.add(animationDebugObject, 'pauseDuration', 0, 10, 1).onChange((value: number) => {
+  //     setPauseDuration(value);
+  //   });
 
-    animationFolder.open();
+  //   animationFolder.open();
 
-    return () => {
-      guiA.destroy();
-    };
-  }, [currentTextColor, currentDotsColor, pauseDuration, rotationSpeed, isAnimated]);
+  //   return () => {
+  //     guiA.destroy();
+  //   };
+  // }, [currentTextColor, currentDotsColor, pauseDuration, rotationSpeed, isAnimated]);
 
   // Separate useEffect to handle updates to Text GUI display
-  useEffect(() => {
-    if (textControllersRef.current) {
-      Object.values(textControllersRef.current).forEach((controller: any) => {
-        controller.updateDisplay();
-      });
-    }
-  }, [materialProps]);
+  // useEffect(() => {
+  //   if (textControllersRef.current) {
+  //     Object.values(textControllersRef.current).forEach((controller: any) => {
+  //       controller.updateDisplay();
+  //     });
+  //   }
+  // }, [materialProps]);
 
-  // Separate useEffect to handle updates to Spheres GUI display
-  useEffect(() => {
-    if (sphereControllersRef.current) {
-      Object.values(sphereControllersRef.current).forEach((controller: any) => {
-        controller.updateDisplay();
-      });
-    }
-  }, [sphereMaterialProps]);
+  // // Separate useEffect to handle updates to Spheres GUI display
+  // useEffect(() => {
+  //   if (sphereControllersRef.current) {
+  //     Object.values(sphereControllersRef.current).forEach((controller: any) => {
+  //       controller.updateDisplay();
+  //     });
+  //   }
+  // }, [sphereMaterialProps]);
 
-  // Separate useEffect to handle updates to Animation GUI display
-  useEffect(() => {
-    if (animationControllersRef.current) {
-      Object.values(animationControllersRef.current).forEach((controller: any) => {
-        controller.updateDisplay();
-      });
-    }
-  }, [isAnimated, rotationSpeed, pauseDuration]);
+  // // Separate useEffect to handle updates to Animation GUI display
+  // useEffect(() => {
+  //   if (animationControllersRef.current) {
+  //     Object.values(animationControllersRef.current).forEach((controller: any) => {
+  //       controller.updateDisplay();
+  //     });
+  //   }
+  // }, [isAnimated, rotationSpeed, pauseDuration]);
 
   // const targetRotation = new THREE.Euler(-0.5, 0.2, 0.09); 
   return (

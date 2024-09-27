@@ -103,6 +103,8 @@ export const MeshContainer = styled.div`
   width: 100vw;
   height:  100%;
   /* cursor: pointer; */
+  margin-top: 30rem;
+  /* margin-left: -30rem; */
 `;
 
 export const LogoContainer = styled.div`
