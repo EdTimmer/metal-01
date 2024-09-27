@@ -50,7 +50,7 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
   useFrame(() => {
     setTimeout(() => {
       setIsRotating(true); // Start animation after 1 second
-    }, 7000);
+    }, 7500);
     if (isRotating && meshRef.current) {
       const currentRotation = meshRef.current.rotation;
 
