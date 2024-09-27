@@ -32,6 +32,7 @@ function OrionLogo({ textColor }: Props) {
   const targetRotation = new THREE.Euler(-0.55, 0.35, 0.18); // Target rotation (x, y, z)
 
   const targetRotationV = new THREE.Euler(0.35, -Math.PI / 2, 0.18);
+  const targetPositionV = [0.25, -0.16, 0];
 
   const rotationSpeedLogo = 0.01;
   const rotationSpeedV = 0.025;
@@ -100,14 +101,19 @@ function OrionLogo({ textColor }: Props) {
 
     if (isRotatingV && vRef.current) {
       const currentRotation = vRef.current.rotation;
+      const currentPosition = vRef.current.position;
       // Increment rotation towards the target rotation
       if (Math.abs(currentRotation.y - targetRotationV.y) > 0.01) {
         currentRotation.y += (targetRotationV.y - currentRotation.y) * rotationSpeedV;
       }
+      if (Math.abs(currentPosition.z - targetPositionV[0]) > 0.01) {
+        currentPosition.z += (targetPositionV[0] - currentPosition.z) * rotationSpeedV;
+      }
 
       // Stop rotation when it reaches the target
       if (
-        Math.abs(currentRotation.y - targetRotationV.y) < 0.01
+        Math.abs(currentRotation.y - targetRotationV.y) < 0.01 &&
+        Math.abs(currentPosition.z - targetPositionV[0]) < 0.01
       ) {
         setIsRotating(false); // Stop animation when rotation reaches the target
       }
@@ -307,7 +313,7 @@ function OrionLogo({ textColor }: Props) {
           depth={0.25}
           materialProps={materialProps}
         />
-        <group ref={vRef} position={[0.25, -0.16, 0]}>
+        <group ref={vRef} position={[0.25, -0.16, -0.7]}>
           <LogoText
             ref={(el) => (logoTextRefs.current[0] = el)}
             text={'V'}
