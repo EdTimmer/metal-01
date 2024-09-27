@@ -305,8 +305,19 @@ function OrionLogo({ textColor }: Props) {
 
         <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
-          text={'crypto'}
-          position={[-3.3, -0.3, 0]}
+          text={'cr'}
+          position={[-5.4, -0.3, 0]}
+          rotation={new THREE.Euler(0, 0, 0)}
+          color={currentTextColor}
+          size={1.4}
+          depth={0.25}
+          materialProps={materialProps}
+        />
+
+        <LogoText
+          ref={(el) => (logoTextRefs.current[0] = el)}
+          text={'ypto'}
+          position={[-2.6, -0.3, 0]}
           rotation={new THREE.Euler(0, 0, 0)}
           color={currentTextColor}
           size={1.4}
