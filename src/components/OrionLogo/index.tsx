@@ -331,7 +331,7 @@ function OrionLogo({ textColor }: Props) {
           materialProps={materialProps}
         />
 
-        <Hemisphere size={1.1} position={[-4.5, 2, 0]} rotation={[0.3, 0, 0]} />
+        <Hemisphere size={1.1} position={[-4.5, 2, 0]} rotation={[0.3, 0, Math.PI / 2]} />
       </>
     </group>
   );
