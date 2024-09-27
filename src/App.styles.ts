@@ -20,9 +20,9 @@ export const AppContainer = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: space-between;
   overflow: hidden;
 `;
 
@@ -39,82 +39,96 @@ export const RowOne = styled.div`
   flex-wrap: wrap;
 `;
 
-export const LogoRow = styled.div`
-  background-color: #ffffff; 
-  width: 100%; 
-  height: 100%;
-  /* margin-bottom: 6rem; */
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  /* margin-left: 10rem; */
-`;
-
-// export const RowThree = styled.div`
-//   background-color:  #51BE9C; //#2B8268; //  //
-//   width: 100%;
-//   flex-grow: 1;
-//   margin: 0;
-//   padding: 0;
-//   flex-wrap: wrap;
-// `;
-
-export const RowFour = styled.div`
-  background-color: #2A98CF; // #2B8268;
-  width: 100%;
-  /* flex-grow: 1; */
-  height: 50rem;
-  margin-top: -5rem;
-  padding: 0;
-  flex-wrap: wrap;
-`;
-
-export const YellowStripe = styled.div`
-  background-color: #FFD000;
-  height: 20rem;
-  width: 16rem;
-  margin: 0;
-  padding: 0;
-  flex-wrap: wrap;
-`;
-
-export const GreenStripe = styled.div`
-  background-color: #51BE9C;
-  height: 20rem;
-  width: 10.7rem;
-  margin: 0;
-  padding: 0;
-  flex-wrap: wrap;
-`;
-
-export const RightSide = styled.div`
-  background-color: #51BE9C; // #90DAEE; //  #2B8268;
-  height: 20rem;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  flex-wrap: wrap;
-`;
-
 export const MeshContainer = styled.div`
   position: relative;
-  /* z-index: 10; */
   width: 100vw;
-  height:  100%;
-  /* cursor: pointer; */
-  /* margin-top: 30rem; */
-  /* margin-left: -30rem; */
+  height: 90rem;
+  margin-left: 10rem;
+  margin-top: 10rem;
+
+  @media (max-width: 1300px) {
+    height: 70rem;
+    margin-top: 10rem;
+    margin-left: 6rem;
+  }
+
+  @media (max-width: 900px) {
+    height: 50rem;
+    margin-top: 5rem;
+    margin-left: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    height: 40rem;
+    margin-top: 5rem;
+    margin-left: 3rem;
+  }
+
+  @media (max-width: 450px) {
+    height: 30rem;
+    margin-top: 5rem;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 350px) {
+    height: 25rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
 `;
 
 export const LogoContainer = styled.div`
   position: absolute;
   z-index: 10;
-  /* top: 0; */
   left: 0;
   width: 100vw;
-  height:  100vh;
+  height: 90rem;
   cursor: pointer;
+
+  @media (max-width: 1300px) {
+    /* width: 45rem; */
+    /* height: 25rem; */
+    /* width: 100vw; */
+    height: 70rem;
+    margin-bottom: 5rem;
+    margin-left: 6rem;
+  }
+
+  @media (max-width: 900px) {
+    /* width: 45rem; */
+    /* height: 25rem; */
+    /* width: 100%; */
+    height: 50rem;
+    margin-top: 5rem;
+    margin-left: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    /* width: 45rem; */
+    /* height: 25rem; */
+    /* width: 100%; */
+    height: 40rem;
+    margin-top: 5rem;
+    margin-left: 3rem;
+  }
+
+  @media (max-width: 450px) {
+    /* width: 45rem; */
+    /* height: 25rem; */
+    /* width: 100%; */
+    height: 30rem;
+    margin-top: 5rem;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 350px) {
+    /* width: 45rem; */
+    /* height: 25rem; */
+    /* width: 100%; */
+    height: 25rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
 `;
 
 export const Header = styled.h1`
@@ -138,11 +152,11 @@ export const Text = styled.h1`
 `;
 
 export const HeaderContainer = styled.div`
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-end;
   flex-wrap: wrap;
   text-align: start;
 `;
