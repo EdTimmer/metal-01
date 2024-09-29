@@ -6,8 +6,6 @@ import { useFrame } from '@react-three/fiber';
 import GlassCover from '../GlassCover';
 import Sphere from '../Sphere';
 import Hemisphere from '../Hemisphere';
-import { Suspense } from 'react';
-import Loader from '../Loader';  // Assuming you have a Loader component
 
 interface Props {
   textColor: string;
@@ -100,8 +98,6 @@ function OrionLogo({ textColor }: Props) {
     <group ref={logoRef} position={[-3, 0, 0]} scale={[3, 3, 3]} rotation={[0.25, 0.335, 0]}>
       <GlassCover position={[-4.5, 2, 0]} size={1.07} />
       <Sphere size={0.95} position={[-4.5, 2, 0]} />
-
-      <Suspense fallback={<Loader />}>
         <LogoText
           ref={(el) => (logoTextRefs.current[0] = el)}
           text={'RION'}
@@ -158,10 +154,9 @@ function OrionLogo({ textColor }: Props) {
           depth={0.6}
           materialProps={materialProps}
         />
-      </Suspense>
 
       <Hemisphere size={1.1} position={[-4.5, 2, 0]} rotation={[0.3, 0, Math.PI / 2]} />
-    </group>
+    </group>    
   );
 }
 

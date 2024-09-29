@@ -1,4 +1,5 @@
-// import { Suspense } from 'react';
+import { Suspense } from 'react';
+import { Loader } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei';
 // import Loader from './components/Loader';
@@ -19,7 +20,7 @@ function App() {
       <MeshContainer>
         <LogoContainer>
           <Canvas gl={{ antialias: true }}>
-            {/* <Suspense fallback={<Loader />}>               */}
+            <Suspense fallback={null}>              
               {/* <OrthographicCamera makeDefault position={[0, 0, 20]} zoom={45} /> */}
               <PerspectiveCamera makeDefault fov={20} position={[0, 0, 80]} />
               <ambientLight intensity={10.0} />
@@ -42,8 +43,14 @@ function App() {
                 {/* <Environment files="/images/sunflowers_puresky_2k.hdr" environmentIntensity={2}/> */}
                 
               {/* <primitive object={new THREE.AxesHelper(5)} /> */}
-            {/* </Suspense> */}
+            </Suspense>
           </Canvas>
+          <Loader
+            containerStyles={{ backgroundColor: 'rgba(1, 1, 1, 0.8)', width: '80rem', height: '40rem', zIndex: '100' }} // Style of the loader container
+            innerStyles={{ color: 'white' }} // Style of the inner loading text
+            dataStyles={{ color: 'white' }} // Style of the loading percentage text
+            dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`} // Customize text
+          />
         </LogoContainer>
       </MeshContainer>
 

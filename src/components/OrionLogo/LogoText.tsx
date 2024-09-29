@@ -31,39 +31,18 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
 
   // Load font and textures using useLoader
   const font = useLoader(FontLoader, '/fonts/alata_regular.typeface.json');
-  const texture = useLoader(THREE.TextureLoader, '/textures/hangar/hangar_concrete_floor_diff_2k.jpg');
+  const texture = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_diff_2k.jpg');
   const displacementMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_disp_2k.png');
   const normalMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_nor_gl_2k.png');
   const roughnessMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_rough_2k.png');
 
-  // Memoize texture settings to ensure they are only applied once
-  useMemo(() => {
-    if (texture) {
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.magFilter = THREE.LinearFilter;
-    }
-    if (displacementMap) {
-      displacementMap.wrapS = THREE.RepeatWrapping;
-      displacementMap.wrapT = THREE.RepeatWrapping;
-      displacementMap.magFilter = THREE.LinearFilter;
-    }
-    if (normalMap) {
-      normalMap.wrapS = THREE.RepeatWrapping;
-      normalMap.wrapT = THREE.RepeatWrapping;
-      normalMap.magFilter = THREE.LinearFilter;
-    }
-    if (roughnessMap) {
-      roughnessMap.wrapS = THREE.RepeatWrapping;
-      roughnessMap.wrapT = THREE.RepeatWrapping;
-      roughnessMap.magFilter = THREE.LinearFilter;
-    }
-  }, [texture, displacementMap, normalMap, roughnessMap]);
+  // Check if the assets are loaded; otherwise, return null
+  if (!font || !texture || !displacementMap || !normalMap || !roughnessMap) {
+    return null;
+  }
 
   // Create text geometry once the font is loaded
   const textGeometry = useMemo(() => {
-    if (!font) return null;
-
     const textOptions = {
       font,
       size,
@@ -83,7 +62,24 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
     return geometry;
   }, [font, text, size, depth]);
 
-  if (!font || !textGeometry) return null;
+  // Memoize texture settings to ensure they are only applied once
+  useMemo(() => {
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.magFilter = THREE.LinearFilter;
+
+    displacementMap.wrapS = THREE.RepeatWrapping;
+    displacementMap.wrapT = THREE.RepeatWrapping;
+    displacementMap.magFilter = THREE.LinearFilter;
+
+    normalMap.wrapS = THREE.RepeatWrapping;
+    normalMap.wrapT = THREE.RepeatWrapping;
+    normalMap.magFilter = THREE.LinearFilter;
+
+    roughnessMap.wrapS = THREE.RepeatWrapping;
+    roughnessMap.wrapT = THREE.RepeatWrapping;
+    roughnessMap.magFilter = THREE.LinearFilter;
+  }, [texture, displacementMap, normalMap, roughnessMap]);
 
   return (
     <mesh ref={ref} geometry={textGeometry} rotation={rotation} position={position}>
