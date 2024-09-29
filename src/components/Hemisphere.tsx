@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { TextureLoader } from 'three';
 
 interface Props {
@@ -15,6 +15,7 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
 
   // Refs to track rotation state without triggering renders
   const hasStartedRotatingRef = useRef(false);
+  const [isLoaded, setIsLoaded] = useState(false); // State to track if loading is complete
   const targetRotation = new THREE.Euler(-Math.PI, 0, 0); // Target rotation (x, y, z)
 
   // Load textures using useLoader
@@ -47,13 +48,20 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
     }
   }, [texture, displacementMap, normalMap, roughnessMap]);
 
+  // Effect to mark the asset as fully loaded
+  useEffect(() => {
+    if (texture && displacementMap && normalMap && roughnessMap) {
+      setIsLoaded(true); // All textures are loaded
+    }
+  }, [texture, displacementMap, normalMap, roughnessMap]);
+
   // Frame loop for controlling the rotation
   useFrame(({ clock }) => {
-    if (!meshRef.current) return;
+    if (!meshRef.current || !isLoaded) return; // Skip rotation if assets are not loaded
 
     const elapsedTime = clock.getElapsedTime();
 
-    // Start rotation after 7 seconds (using elapsed time instead of setTimeout)
+    // Start rotation after loading completes
     if (elapsedTime > 7 && !hasStartedRotatingRef.current) {
       hasStartedRotatingRef.current = true; // Update ref without causing re-render
     }
@@ -92,3 +100,4 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
 };
 
 export default Hemisphere;
+
