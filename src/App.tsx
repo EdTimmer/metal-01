@@ -46,7 +46,7 @@ function App() {
             </Suspense>
           </Canvas>
           <Loader
-            containerStyles={{ backgroundColor: 'rgba(1, 1, 1, 0.8)', width: '100vw', height: '100vh', zIndex: '100' }} // Style of the loader container
+            containerStyles={{ backgroundColor: 'rgba(1, 1, 1, 0.8)', width: '80vw', height: '80vh', zIndex: '100' }} // Style of the loader container
             innerStyles={{ color: 'white', fontSize: '36px' }} // Style of the inner loading text
             dataStyles={{ color: 'white', fontSize: '36px' }} // Style of the loading percentage text
             dataInterpolation={(p) => `Loading ${p.toFixed(2)}%`} // Customize text
