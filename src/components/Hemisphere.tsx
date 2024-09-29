@@ -1,21 +1,22 @@
 import * as THREE from 'three';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useMemo, useEffect, useState } from 'react';
 import { TextureLoader } from 'three';
 
 interface Props {
   position: [number, number, number];
   size: number;
   rotation: [number, number, number];
+  onLoadComplete: () => void; // Callback to notify parent when loading is complete
 }
 
-const Hemisphere = ({ position, size, rotation }: Props) => {
+const Hemisphere = ({ position, size, rotation, onLoadComplete }: Props) => {
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const meshRef = useRef<THREE.Mesh>(null);
 
-  // Refs to track rotation state without triggering renders
-  const hasStartedRotatingRef = useRef(false);
-  const [isLoaded, setIsLoaded] = useState(false); // State to track if loading is complete
+  const [isLoaded, setIsLoaded] = useState(false); // State to track if assets are fully loaded
+  const [shouldRotate, setShouldRotate] = useState(false); // State to track rotation start
+
   const targetRotation = new THREE.Euler(-Math.PI, 0, 0); // Target rotation (x, y, z)
 
   // Load textures using useLoader
@@ -48,35 +49,39 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
     }
   }, [texture, displacementMap, normalMap, roughnessMap]);
 
-  // Effect to mark the asset as fully loaded
+  // Notify parent that assets are loaded and update local state
   useEffect(() => {
     if (texture && displacementMap && normalMap && roughnessMap) {
-      setIsLoaded(true); // All textures are loaded
+      setIsLoaded(true);
+      onLoadComplete(); // Notify parent that loading is complete
     }
-  }, [texture, displacementMap, normalMap, roughnessMap]);
+  }, [texture, displacementMap, normalMap, roughnessMap, onLoadComplete]);
+
+  // Start rotation after loading is complete
+  useEffect(() => {
+    if (isLoaded) {
+      // Start rotation 7 seconds after loading is complete
+      const timeoutId = setTimeout(() => {
+        setShouldRotate(true); // Enable rotation
+      }, 7000);
+
+      return () => clearTimeout(timeoutId); // Clear timeout if component is unmounted
+    }
+  }, [isLoaded]);
 
   // Frame loop for controlling the rotation
-  useFrame(({ clock }) => {
-    if (!meshRef.current || !isLoaded) return; // Skip rotation if assets are not loaded
+  useFrame(() => {
+    if (!meshRef.current || !shouldRotate) return; // Skip rotation if assets are not loaded or rotation not started
 
-    const elapsedTime = clock.getElapsedTime();
+    const currentRotation = meshRef.current.rotation;
+    const rotationSpeed = 0.01; // Adjust this value to control the rotation speed
 
-    // Start rotation after loading completes
-    if (elapsedTime > 7 && !hasStartedRotatingRef.current) {
-      hasStartedRotatingRef.current = true; // Update ref without causing re-render
+    // Increment rotation towards the target rotation
+    if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
+      currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeed;
     }
-
-    if (hasStartedRotatingRef.current) {
-      const currentRotation = meshRef.current.rotation;
-      const rotationSpeed = 0.01; // Adjust this value to control the rotation speed
-
-      // Increment rotation towards the target rotation
-      if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
-        currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeed;
-      }
-      if (Math.abs(currentRotation.y - targetRotation.y) > 0.01) {
-        currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeed;
-      }
+    if (Math.abs(currentRotation.y - targetRotation.y) > 0.01) {
+      currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeed;
     }
   });
 
@@ -100,4 +105,3 @@ const Hemisphere = ({ position, size, rotation }: Props) => {
 };
 
 export default Hemisphere;
-

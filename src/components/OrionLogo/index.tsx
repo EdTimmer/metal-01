@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Group } from 'three';
 import LogoText from './LogoText';
 import * as THREE from 'three';
@@ -15,6 +15,29 @@ function OrionLogo({ textColor }: Props) {
   const logoRef = useRef<Group>(null);
   const logoTextRefs = useRef<Array<THREE.Mesh | null>>(Array(5).fill(null));
   const vRef = useRef<THREE.Group | null>(null);
+
+  // const [isAllAssetsLoaded, setIsAllAssetsLoaded] = useState(false); // Track loading of all assets
+  const [loadedInstances, setLoadedInstances] = useState(0); // Track how many LogoText instances have loaded
+  const totalInstances = 5; // Total number of LogoText instances
+  const [isHemisphereLoaded, setIsHemisphereLoaded] = useState(false); // Track Hemisphere loading
+  const [isAllAssetsLoaded, setIsAllAssetsLoaded] = useState(false); // Track if all assets are loaded
+
+  // Increment loadedInstances only once per LogoText instance
+  const handleLogoTextLoad = () => {
+    setLoadedInstances((prev) => {
+      if (prev < totalInstances) {
+        return prev + 1;
+      }
+      return prev; // Prevent further increments
+    });
+  };
+  
+  // Check if all assets are loaded (LogoText and Hemisphere)
+  useEffect(() => {
+    if (loadedInstances === totalInstances && isHemisphereLoaded) {
+      setIsAllAssetsLoaded(true); // All assets are now loaded
+    }
+  }, [loadedInstances, isHemisphereLoaded]);
 
   const currentTextColor = textColor;
 
@@ -42,54 +65,58 @@ function OrionLogo({ textColor }: Props) {
   }; 
 
   useFrame(() => {
-    setTimeout(() => {
-      setIsRotating(true);
-    }, 1000);
+    if (isAllAssetsLoaded) {
+      setTimeout(() => {
+        setIsRotating(true);
+      }, 1000);
 
-    if (isRotating && logoRef.current) {
-      const currentRotation = logoRef.current.rotation;
+      if (isRotating && logoRef.current) {
+        const currentRotation = logoRef.current.rotation;
 
-      if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
-        currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeedLogo;
-      }
-      if (Math.abs(currentRotation.y - targetRotation.y) > 0.01) {
-        currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeedLogo;
-      }
-      if (Math.abs(currentRotation.z - targetRotation.z) > 0.01) {
-        currentRotation.z += (targetRotation.z - currentRotation.z) * rotationSpeedLogo;
-      }
+        if (Math.abs(currentRotation.x - targetRotation.x) > 0.01) {
+          currentRotation.x += (targetRotation.x - currentRotation.x) * rotationSpeedLogo;
+        }
+        if (Math.abs(currentRotation.y - targetRotation.y) > 0.01) {
+          currentRotation.y += (targetRotation.y - currentRotation.y) * rotationSpeedLogo;
+        }
+        if (Math.abs(currentRotation.z - targetRotation.z) > 0.01) {
+          currentRotation.z += (targetRotation.z - currentRotation.z) * rotationSpeedLogo;
+        }
 
-      if (
-        Math.abs(currentRotation.x - targetRotation.x) < 0.01 &&
-        Math.abs(currentRotation.y - targetRotation.y) < 0.01 &&
-        Math.abs(currentRotation.z - targetRotation.z) < 0.01
-      ) {
-        setIsRotating(false);
+        if (
+          Math.abs(currentRotation.x - targetRotation.x) < 0.01 &&
+          Math.abs(currentRotation.y - targetRotation.y) < 0.01 &&
+          Math.abs(currentRotation.z - targetRotation.z) < 0.01
+        ) {
+          setIsRotating(false);
+        }
       }
     }
   });
 
   useFrame(() => {
-    setTimeout(() => {
-      setIsRotatingV(true);
-    }, 5000);
+    if (isAllAssetsLoaded) {
+      setTimeout(() => {
+        setIsRotatingV(true);
+      }, 5000);
 
-    if (isRotatingV && vRef.current) {
-      const currentRotation = vRef.current.rotation;
-      const currentPosition = vRef.current.position;
+      if (isRotatingV && vRef.current) {
+        const currentRotation = vRef.current.rotation;
+        const currentPosition = vRef.current.position;
 
-      if (Math.abs(currentRotation.y - targetRotationV.y) > 0.01) {
-        currentRotation.y += (targetRotationV.y - currentRotation.y) * rotationSpeedV;
-      }
-      if (Math.abs(currentPosition.z - targetPositionV[2]) > 0.01) {
-        currentPosition.z += (targetPositionV[2] - currentPosition.z) * rotationSpeedV;
-      }
+        if (Math.abs(currentRotation.y - targetRotationV.y) > 0.01) {
+          currentRotation.y += (targetRotationV.y - currentRotation.y) * rotationSpeedV;
+        }
+        if (Math.abs(currentPosition.z - targetPositionV[2]) > 0.01) {
+          currentPosition.z += (targetPositionV[2] - currentPosition.z) * rotationSpeedV;
+        }
 
-      if (
-        Math.abs(currentRotation.y - targetRotationV.y) < 0.01 &&
-        Math.abs(currentPosition.z - targetPositionV[2]) < 0.01
-      ) {
-        setIsRotating(false);
+        if (
+          Math.abs(currentRotation.y - targetRotationV.y) < 0.01 &&
+          Math.abs(currentPosition.z - targetPositionV[2]) < 0.01
+        ) {
+          setIsRotating(false);
+        }
       }
     }
   });
@@ -106,7 +133,8 @@ function OrionLogo({ textColor }: Props) {
           color={currentTextColor}
           size={2}
           depth={0.6}
-          materialProps={materialProps} 
+          materialProps={materialProps}
+          onLoadComplete={handleLogoTextLoad} // Track loading completion
         />
 
         <LogoText
@@ -118,6 +146,7 @@ function OrionLogo({ textColor }: Props) {
           size={1.4}
           depth={0.25}
           materialProps={materialProps}
+          onLoadComplete={handleLogoTextLoad} // Track loading completion
         />
 
         <LogoText
@@ -129,6 +158,7 @@ function OrionLogo({ textColor }: Props) {
           size={1.4}
           depth={0.25}
           materialProps={materialProps}
+          onLoadComplete={handleLogoTextLoad} // Track loading completion
         />
 
         <group ref={vRef} position={[0.25, -0.16, -1.2]}>
@@ -141,6 +171,7 @@ function OrionLogo({ textColor }: Props) {
             size={2}
             depth={0.6}
             materialProps={materialProps}
+            onLoadComplete={handleLogoTextLoad} // Track loading completion
           />
         </group>
 
@@ -153,9 +184,15 @@ function OrionLogo({ textColor }: Props) {
           size={2}
           depth={0.6}
           materialProps={materialProps}
+          onLoadComplete={handleLogoTextLoad} // Track loading completion
         />
 
-      <Hemisphere size={1.1} position={[-4.5, 2, 0]} rotation={[0.3, 0, Math.PI / 2]} />
+      <Hemisphere 
+        size={1.1}
+        position={[-4.5, 2, 0]}
+        rotation={[0.3, 0, Math.PI / 2]}
+        onLoadComplete={() => setIsHemisphereLoaded(true)} // Track Hemisphere loading completion
+      />
     </group>    
   );
 }

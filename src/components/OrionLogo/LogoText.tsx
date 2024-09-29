@@ -1,4 +1,4 @@
-import { forwardRef, useMemo, useRef } from 'react';
+import { forwardRef, useMemo, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { Mesh, TextureLoader } from 'three';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
@@ -24,9 +24,10 @@ interface Props {
     attenuationColor: string;
     envMapIntensity: number;
   };
+  onLoadComplete: () => void; // Callback function to notify parent when loaded
 }
 
-const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, size, depth, materialProps }, ref) => {
+const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, size, depth, materialProps, onLoadComplete }, ref) => {
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
 
   // Load font and textures using useLoader
@@ -40,6 +41,12 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
   if (!font || !texture || !displacementMap || !normalMap || !roughnessMap) {
     return null;
   }
+
+  useEffect(() => {
+    if (font && texture && displacementMap && normalMap && roughnessMap) {
+      onLoadComplete(); // Notify parent when LogoText assets are loaded
+    }
+  }, [font, texture, displacementMap, normalMap, roughnessMap, onLoadComplete]);
 
   // Create text geometry once the font is loaded
   const textGeometry = useMemo(() => {
