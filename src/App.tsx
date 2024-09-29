@@ -1,7 +1,7 @@
-import { Suspense } from 'react';
+// import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import Loader from './components/Loader';
+// import Loader from './components/Loader';
 
 import { 
   AppContainer,
