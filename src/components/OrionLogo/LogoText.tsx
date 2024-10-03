@@ -33,20 +33,20 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
   // Load font and textures using useLoader
   const font = useLoader(FontLoader, '/fonts/alata_regular.typeface.json');
   const texture = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_diff_2k.jpg');
-  const displacementMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_disp_2k.png');
+  // const displacementMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_disp_2k.png');
   const normalMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_nor_gl_2k.png');
   const roughnessMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_rough_2k.png');
 
   // Check if the assets are loaded; otherwise, return null
-  if (!font || !texture || !displacementMap || !normalMap || !roughnessMap) {
+  if (!font || !texture || !normalMap || !roughnessMap) {
     return null;
   }
 
   useEffect(() => {
-    if (font && texture && displacementMap && normalMap && roughnessMap) {
+    if (font && texture && normalMap && roughnessMap) {
       onLoadComplete(); // Notify parent when LogoText assets are loaded
     }
-  }, [font, texture, displacementMap, normalMap, roughnessMap, onLoadComplete]);
+  }, [font, texture, normalMap, roughnessMap, onLoadComplete]);
 
   // Create text geometry once the font is loaded
   const textGeometry = useMemo(() => {
@@ -75,9 +75,9 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
     texture.wrapT = THREE.RepeatWrapping;
     texture.magFilter = THREE.LinearFilter;
 
-    displacementMap.wrapS = THREE.RepeatWrapping;
-    displacementMap.wrapT = THREE.RepeatWrapping;
-    displacementMap.magFilter = THREE.LinearFilter;
+    // displacementMap.wrapS = THREE.RepeatWrapping;
+    // displacementMap.wrapT = THREE.RepeatWrapping;
+    // displacementMap.magFilter = THREE.LinearFilter;
 
     normalMap.wrapS = THREE.RepeatWrapping;
     normalMap.wrapT = THREE.RepeatWrapping;
@@ -86,7 +86,7 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
     roughnessMap.wrapS = THREE.RepeatWrapping;
     roughnessMap.wrapT = THREE.RepeatWrapping;
     roughnessMap.magFilter = THREE.LinearFilter;
-  }, [texture, displacementMap, normalMap, roughnessMap]);
+  }, [texture, normalMap, roughnessMap]);
 
   return (
     <mesh ref={ref} geometry={textGeometry} rotation={rotation} position={position}>
@@ -94,8 +94,8 @@ const LogoText = forwardRef<Mesh, Props>(({ position, rotation, text, color, siz
         ref={materialRef} // Attach the material to the ref
 
         map={texture}
-        displacementMap={displacementMap} // Displacement map
-        displacementScale={0} // Adjust depth based on displacement
+        // displacementMap={displacementMap} // Displacement map
+        // displacementScale={0} // Adjust depth based on displacement
         normalMap={normalMap} // Normal map for surface details
         roughnessMap={roughnessMap} // Roughness map for surface shininess
         clearcoat={materialProps.clearcoat}

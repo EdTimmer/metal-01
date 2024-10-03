@@ -21,7 +21,7 @@ const Hemisphere = ({ position, size, rotation, onLoadComplete }: Props) => {
 
   // Load textures using useLoader
   const texture = useLoader(THREE.TextureLoader, '/textures/hangar/hangar_concrete_floor_diff_2k.jpg');
-  const displacementMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_disp_2k.png');
+  // const displacementMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_disp_2k.png');
   const normalMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_nor_gl_2k.png');
   const roughnessMap = useLoader(TextureLoader, '/textures/hangar/hangar_concrete_floor_rough_2k.png');
 
@@ -32,11 +32,11 @@ const Hemisphere = ({ position, size, rotation, onLoadComplete }: Props) => {
       texture.wrapT = THREE.RepeatWrapping;
       texture.magFilter = THREE.LinearFilter;
     }
-    if (displacementMap) {
-      displacementMap.wrapS = THREE.RepeatWrapping;
-      displacementMap.wrapT = THREE.RepeatWrapping;
-      displacementMap.magFilter = THREE.LinearFilter;
-    }
+    // if (displacementMap) {
+    //   displacementMap.wrapS = THREE.RepeatWrapping;
+    //   displacementMap.wrapT = THREE.RepeatWrapping;
+    //   displacementMap.magFilter = THREE.LinearFilter;
+    // }
     if (normalMap) {
       normalMap.wrapS = THREE.RepeatWrapping;
       normalMap.wrapT = THREE.RepeatWrapping;
@@ -47,15 +47,15 @@ const Hemisphere = ({ position, size, rotation, onLoadComplete }: Props) => {
       roughnessMap.wrapT = THREE.RepeatWrapping;
       roughnessMap.magFilter = THREE.LinearFilter;
     }
-  }, [texture, displacementMap, normalMap, roughnessMap]);
+  }, [texture, normalMap, roughnessMap]);
 
   // Notify parent that assets are loaded and update local state
   useEffect(() => {
-    if (texture && displacementMap && normalMap && roughnessMap) {
+    if (texture && normalMap && roughnessMap) {
       setIsLoaded(true);
       onLoadComplete(); // Notify parent that loading is complete
     }
-  }, [texture, displacementMap, normalMap, roughnessMap, onLoadComplete]);
+  }, [texture, normalMap, roughnessMap, onLoadComplete]);
 
   // Start rotation after loading is complete
   useEffect(() => {
@@ -91,8 +91,8 @@ const Hemisphere = ({ position, size, rotation, onLoadComplete }: Props) => {
       <meshPhysicalMaterial
         ref={materialRef}
         map={texture}
-        displacementMap={displacementMap}
-        displacementScale={0} // Adjust depth based on displacement
+        // displacementMap={displacementMap}
+        // displacementScale={0} // Adjust depth based on displacement
         normalMap={normalMap} // Normal map for surface details
         roughnessMap={roughnessMap} // Roughness map for surface shininess
         roughness={0.5}
